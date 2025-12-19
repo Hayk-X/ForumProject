@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+</head>
+<body>
+    {% for post in posts %}
+    <div>
+        <strong>{{ post.creator.username }}</strong> 
+        <small><em>({{ post.creation_time }})</em></small>
+        
+        <p>{{ post.content }}</p>
+
+        <a href="{% url 'comment_section' post.id %}">
+            <small>View Comments</small>
+        </a>
+    </div>
+    <hr>
+    {% endfor %}
+    
+</body>
+</html>

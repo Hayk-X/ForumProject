@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+</head>
+<body>
+    <h3>Comments for: {{ post.title }}</h3>
+    <hr size="1">
+
+    {% for comment in comments %}
+    <div style="margin-bottom: 15px; padding-left: 10px;">
+        <strong>{{ comment.creator }}</strong> 
+        <small><em>at {{ comment.creation_time }}</em></small>
+        
+        <p style="margin-top: 5px;">{{ comment.content }}</p>
+    </div>
+    <hr size="1" color="#eeeeee" width="50%" align="left">
+    {% endfor %}
+
+    <br>
+    <a href="{% url 'main_page' %}">← Back to main page</a>
+    
+</body>
+</html>
