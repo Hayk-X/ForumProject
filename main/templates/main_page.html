@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main Page</title>
-</head>
-<body>
-    {% for post in posts %}
+{% extends 'base.html' %}
+
+{% block title %} Main Page {% endblock %}
+
+{% block content %}
+{% for post in posts %}
     <div>
         <strong>{{ post.creator.username }}</strong> 
         <small><em>({{ post.creation_time }})</em></small>
@@ -19,6 +16,5 @@
     </div>
     <hr>
     {% endfor %}
-    
-</body>
-</html>
+
+{% endblock %}
