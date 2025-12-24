@@ -19,6 +19,22 @@
     <hr size="1" color="#eeeeee" width="50%" align="left">
     {% endfor %}
 
+
+
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Post the comment</button>
+
+    </form>
+    {% else %}
+        <h3>If you would like to leave a comment, log in or regiser</h3>
+        <a href="{% url 'login' %}">Sign in</a>
+        <a href="{% url 'register_page' %}">Register</a>
+
+    {% endif %}
+
     <br>
     <a href="{% url 'main_page' %}">← Back to main page</a>
     

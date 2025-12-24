@@ -9,3 +9,14 @@ class UserRegister(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(max_length=300)
+
+
+
+class PostForm(forms.Form):
+    title = forms.CharField(max_length=100)
+    content = forms.CharField(max_length=2000)
