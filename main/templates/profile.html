@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<a href="/">Gnal Glxavor ej</a>
+
+<h1>User interface</h1>
+
+<p><b>Username:</b> {{ user.username }}</p>
+<p><b>Email:</b> {{ user.email }}</p>
+
+<p><b>Bio:</b> {{ profile.bio }}</p>
+
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" width="500" alt="Avatar">
+{% else %}
+    <p>Nkar drac chi</p>
+{% endif %}
+<br>
+<hr>
+<a href="{% url 'edit_profile' %}">Popoxel profile-y</a>
+
+
+{% endblock %}

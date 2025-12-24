@@ -3,22 +3,21 @@
 {% block title %} Main Page {% endblock %}
 
 {% block content %}
-{% for post in posts %}
-    <div>
-        <strong>{{ post.creator.username }}</strong> 
-        <small><em>({{ post.creation_time }})</em></small>
-        
-        <p>{{ post.content }}</p>
-
-        <a href="{% url 'comment_section' post.id %}">
-            <small>View Comments</small>
-        </a>
-    </div>
-    <hr>
+    <h2 class="mb-4">Recent Posts</h2>
+    {% for post in posts %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-primary">
+                    <a href="{% url 'other_profile' post.creator.id %}" class="text-decoration-none">
+                        {{ post.creator.username }}
+                    </a>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted small">{{ post.creation_time }}</h6>
+                <p class="card-text">{{ post.content }}</p>
+                <a href="{% url 'comment_section' post.id %}" class="btn btn-sm btn-outline-secondary">
+                    View Comments
+                </a>
+            </div>
+        </div>
     {% endfor %}
-
-    {% if user.is_authenticated %}
-    <a href="{% url 'post_cr' %}">Make a new post</a>
-    {% endif %}
-
 {% endblock %}

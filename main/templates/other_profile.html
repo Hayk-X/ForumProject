@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block content %}
+<a href="{% url 'main_page' %}">Gnal het</a>
+<h1>{{ profile.user.username }}'s User profile</h1>
+
+<p><b>Username:</b> {{ profile.user.username }}</p>
+<p><b>Email:</b> {{ profile.user.email }}</p>
+<p><b>Bio:</b> {{ profile.bio }}</p>
+
+{% if profile.avatar %}
+    <img src="{{ profile.avatar.url }}" width="150">
+{% else %}
+    <p>Nkar chka</p>
+{% endif %}
+
+{% if can_edit %}
+    <a href="{% url 'edit_profile' %}">Popoxel ejy</a>
+{% endif %}
+{% endblock %}

@@ -1,42 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comments</title>
-</head>
-<body>
-    <h3>Comments for: {{ post.title }}</h3>
-    <hr size="1">
+{% extends 'base.html' %}
 
-    {% for comment in comments %}
-    <div style="margin-bottom: 15px; padding-left: 10px;">
-        <strong>{{ comment.creator }}</strong> 
-        <small><em>at {{ comment.creation_time }}</em></small>
-        
-        <p style="margin-top: 5px;">{{ comment.content }}</p>
+{% block title %}Comments for {{ post.title }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{% url 'main_page' %}" class="btn btn-link p-0 text-decoration-none text-muted">
+        ← Back to main page
+    </a>
+</div>
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h3 class="card-title">Comments for: <span class="text-primary">{{ post.title }}</span></h3>
     </div>
-    <hr size="1" color="#eeeeee" width="50%" align="left">
+</div>
+<div class="comments-section mb-5">
+    {% for comment in comments %}
+    <div class="card mb-3 border-0 border-start border-primary border-4 shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'other_profile' comment.creator.id %}" class="text-decoration-none">
+                            @{{ comment.creator.username }}
+                        </a>
+                    {% else %}
+                        <span class="text-dark">@{{ comment.creator.username }}</span>
+                    {% endif %}
+                </strong>
+                <small class="text-muted italic">{{ comment.creation_time }}</small>
+            </div>
+            <p class="card-text text-secondary mb-0">{{ comment.content }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-muted">No comments yet. Be the first to say something!</p>
     {% endfor %}
-
-
-
+</div>
+<hr class="my-5">
+<div class="form-section bg-white p-4 rounded shadow-sm border">
     {% if user.is_authenticated %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Post the comment</button>
-
-    </form>
+        <h4 class="mb-3">Leave a comment</h4>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 custom-form">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Post the comment</button>
+        </form>
     {% else %}
-        <h3>If you would like to leave a comment, log in or regiser</h3>
-        <a href="{% url 'login' %}">Sign in</a>
-        <a href="{% url 'register_page' %}">Register</a>
-
+        <div class="text-center py-3">
+            <h5 class="mb-3 text-muted">If you would like to leave a comment, please log in</h5>
+            <div class="d-grid gap-2 d-md-block">
+                <a href="{% url 'login' %}" class="btn btn-outline-primary px-4">Sign in</a>
+                <a href="{% url 'register_page' %}" class="btn btn-primary px-4">Register</a>
+            </div>
+        </div>
     {% endif %}
-
-    <br>
-    <a href="{% url 'main_page' %}">← Back to main page</a>
-    
-</body>
-</html>
+</div>
+{% endblock %}
