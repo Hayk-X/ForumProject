@@ -7,10 +7,26 @@ from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm, UserForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
+from django.conf import settings
+from .forms import UserRegister
 
 def main_page(request):
-    posts = Post.objects.all()
-    return render(request, "main_page.html",{"posts": posts})
+    posts = Post.objects.all().order_by('-creation_time')
+    return render(request, "main_page.html", {"posts": posts})
+
+def post_list(request):
+    posts = Post.objects.all().order_by('-creation_time')
+    return render(request, 'posts.html', {'posts': posts})
+
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('main_page')
 
 def comment_view(request, id):
     post = Post.objects.get(id = id)
@@ -35,20 +51,29 @@ def comment_view(request, id):
                                              "form":content})
 
 
+
+
+def send_registration_email(to_email, username):
+    subject = 'Успешная регистрация'
+    message = f'Здравствуйте, {username}!\n\nВы успешно зарегистрировались на нашем сайте.'
+    email_from = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [to_email]
+    send_mail(subject, message, email_from, recipient_list)
+
 def register_view(request):
     if request.method == 'POST':
         form = UserRegister(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-        return redirect("main_page")
-    
+            
+            send_registration_email(user.email, user.username)
+            
+            return redirect("main_page")
     else:
         form = UserRegister()
         
-    return render(request, "register.html", {"form":form})
-
-
+    return render(request, "register.html", {"form": form})
 
 @login_required
 def profile_view(request):
